@@ -74,7 +74,7 @@ class DailyWeeklyPage(BasePage):
         dailies.columnconfigure(0, weight=1)
         ttk.Label(
             dailies,
-            text="Daily task rows will live here: bosses, symbols, events.",
+            text="Daily task rows will live here: tasks, resets, milestones.",
             style="Body.TLabel",
         ).grid(row=0, column=0, sticky="w")
 

@@ -23,8 +23,7 @@ class StateStoreTest(unittest.TestCase):
                 [item.title for item in state.navigation],
                 ["Daily/Weekly", "Goals"],
             )
-            self.assertEqual(state.navigation[1].children[0].title, "Lv1 Hexa")
-            self.assertEqual(state.navigation[1].children[1].title, "Sol Hecate")
+            self.assertEqual(state.navigation[1].children, [])
 
     def test_store_preserves_user_added_goal(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -33,11 +32,11 @@ class StateStoreTest(unittest.TestCase):
             state = store.load()
 
             goals = state.navigation[1]
-            custom_goal = NavItem(title="Arcane Symbol Push", item_type="goal")
+            custom_goal = NavItem(title="Weekly Progress Goal", item_type="goal")
             goals.children.append(custom_goal)
             state.goals[custom_goal.item_id] = {
                 "title": custom_goal.title,
-                "notes": "Get more symbols.",
+                "notes": "Make steady progress.",
                 "tasks": [],
             }
             store.save(state)
@@ -47,11 +46,11 @@ class StateStoreTest(unittest.TestCase):
 
             self.assertEqual(
                 reloaded_goals.children[-1].title,
-                "Arcane Symbol Push",
+                "Weekly Progress Goal",
             )
             self.assertEqual(
                 reloaded.goals[custom_goal.item_id]["notes"],
-                "Get more symbols.",
+                "Make steady progress.",
             )
 
     def test_store_adopts_legacy_data_when_new_file_missing(self):
@@ -61,13 +60,13 @@ class StateStoreTest(unittest.TestCase):
             legacy_file = temp_path / "legacy" / "tracker_data.json"
             legacy_store = StateStore(legacy_file, legacy_file)
             legacy_state = legacy_store.load()
-            legacy_state.daily_weekly["dailies"] = ["Monster Park"]
+            legacy_state.daily_weekly["dailies"] = ["Daily Check"]
             legacy_store.save(legacy_state)
 
             adopted_state = StateStore(data_file, legacy_file).load()
 
             self.assertTrue(data_file.exists())
-            self.assertEqual(adopted_state.daily_weekly["dailies"], ["Monster Park"])
+            self.assertEqual(adopted_state.daily_weekly["dailies"], ["Daily Check"])
 
     def test_store_backs_up_corrupt_json_and_recovers(self):
         with tempfile.TemporaryDirectory() as temp_dir:
