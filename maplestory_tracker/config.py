@@ -15,4 +15,4 @@ DATA_FILE = USER_DATA_DIR / "tracker_data.json"
 
 # Replace these when your GitHub repository is ready.
 GITHUB_OWNER = "JustAncient"
-GITHUB_REPO = "maplestory-tracker"
+GITHUB_REPO = "ancient-all-in-one"

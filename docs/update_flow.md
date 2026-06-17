@@ -5,7 +5,7 @@ This project uses GitHub Releases as the update source.
 The app checks this URL on launch and from `Help > Check for Updates`:
 
 ```text
-https://api.github.com/repos/JustAncient/maplestory-tracker/releases/latest
+https://api.github.com/repos/JustAncient/ancient-all-in-one/releases/latest
 ```
 
 User data is stored outside the application package:
