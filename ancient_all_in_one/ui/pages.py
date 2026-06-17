@@ -66,7 +66,7 @@ class DailyWeeklyPage(BasePage):
 
         self.add_title(
             "Daily/Weekly",
-            "Track recurring MapleStory tasks here as modules are added.",
+            "Track recurring game tasks here as modules are added.",
         )
 
         dailies = ttk.LabelFrame(self, text="Dailies", padding=12)

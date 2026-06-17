@@ -1,4 +1,4 @@
-"""Command-line entry point for the MapleStory tracker."""
+"""Command-line entry point for Ancient All-in-One."""
 
 from ancient_all_in_one.app import main
 

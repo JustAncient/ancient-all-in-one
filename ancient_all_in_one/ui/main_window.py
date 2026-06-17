@@ -2,16 +2,21 @@
 
 from __future__ import annotations
 
+import logging
 import tkinter as tk
 import webbrowser
 from tkinter import messagebox, simpledialog, ttk
+from types import TracebackType
 
 from ancient_all_in_one.config import APP_NAME
 from ancient_all_in_one.models import AppState, NavItem
+from ancient_all_in_one.services.diagnostics import build_diagnostics
 from ancient_all_in_one.services.storage import StateStore
 from ancient_all_in_one.services.updates import UpdateChecker, UpdateResult
 from ancient_all_in_one.ui.navigation import NavigationSidebar
 from ancient_all_in_one.ui.pages import PageFactory
+
+LOGGER = logging.getLogger(__name__)
 
 
 class MainWindow(tk.Tk):
@@ -110,6 +115,7 @@ class MainWindow(tk.Tk):
             label="Check for Updates",
             command=self._show_update_result,
         )
+        help_menu.add_command(label="Diagnostics", command=self._show_diagnostics)
         help_menu.add_command(label="About", command=self._show_about)
         menu_bar.add_cascade(label="Help", menu=help_menu)
 
@@ -196,7 +202,31 @@ class MainWindow(tk.Tk):
     def _show_about(self) -> None:
         messagebox.showinfo(
             "About",
-            "MapleStory GMS Tracker\nA modular progression tracker.",
+            f"{APP_NAME}\nA modular all-in-one progression tracker.",
+            parent=self,
+        )
+
+    def _show_diagnostics(self) -> None:
+        diagnostics = build_diagnostics()
+        messagebox.showinfo(
+            "Diagnostics",
+            diagnostics.to_message(),
+            parent=self,
+        )
+
+    def report_callback_exception(
+        self,
+        exc: type[BaseException],
+        value: BaseException,
+        trace: TracebackType | None,
+    ) -> None:
+        LOGGER.exception(
+            "Unhandled UI callback error",
+            exc_info=(exc, value, trace),
+        )
+        messagebox.showerror(
+            "Unexpected Error",
+            "An unexpected error occurred. Check the app log for details.",
             parent=self,
         )
 

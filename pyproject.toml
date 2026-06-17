@@ -1,7 +1,7 @@
 [project]
 name = "ancient-all-in-one"
 version = "0.1.0"
-description = "A modular all-in-one MapleStory GMS progression tracker."
+description = "A modular all-in-one progression tracker for games."
 requires-python = ">=3.11"
 dependencies = []
 

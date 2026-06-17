@@ -1,7 +1,7 @@
 # Ancient All-in-One
 
-A modular desktop app for tracking MapleStory GMS daily, weekly, character,
-account, and goal progression.
+A modular desktop app for tracking daily, weekly, character, account,
+and goal progression across games.
 
 The first version focuses on a scalable foundation:
 
