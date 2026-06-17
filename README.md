@@ -1,4 +1,4 @@
-# MapleStory GMS Progression Tracker
+# Ancient All-in-One
 
 A modular desktop app for tracking MapleStory GMS daily, weekly, character,
 account, and goal progression.

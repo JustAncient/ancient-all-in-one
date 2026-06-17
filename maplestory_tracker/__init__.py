@@ -1,3 +1,3 @@
-"""MapleStory GMS progression tracker."""
+"""Ancient All-in-One progression tracker."""
 
 __version__ = "0.1.0"
