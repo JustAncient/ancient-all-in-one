@@ -21,13 +21,11 @@ class NavItem:
     def from_dict(cls, payload: dict[str, Any]) -> NavItem:
         """Build a navigation item from saved JSON data."""
 
-        children = [
-            cls.from_dict(child) for child in payload.get("children", [])
-        ]
+        children = [cls.from_dict(child) for child in payload.get("children", [])]
         return cls(
             title=payload["title"],
             item_type=payload["item_type"],
-            item_id=payload.get("item_id", uuid4().hex),
+            item_id=payload.get("item_id") or uuid4().hex,
             children=children,
             can_add_child=payload.get("can_add_child", False),
         )
@@ -60,8 +58,7 @@ class AppState:
         return cls(
             schema_version=payload.get("schema_version", 1),
             navigation=[
-                NavItem.from_dict(item)
-                for item in payload.get("navigation", [])
+                NavItem.from_dict(item) for item in payload.get("navigation", [])
             ],
             goals=payload.get("goals", {}),
             daily_weekly=payload.get("daily_weekly", {}),

@@ -1,4 +1,4 @@
-# Update Flow
+﻿# Update Flow
 
 This project uses GitHub Releases as the update source.
 
@@ -11,7 +11,7 @@ https://api.github.com/repos/JustAncient/ancient-all-in-one/releases/latest
 User data is stored outside the application package:
 
 ```text
-user_data/tracker_data.json
+%LOCALAPPDATA%\Ancient All-in-One\tracker_data.json
 ```
 
 That folder is ignored by Git, so code updates should not overwrite a user's
@@ -20,10 +20,10 @@ goals, notes, or custom sidebar items.
 ## Normal Development Loop
 
 1. Make code changes locally.
-2. Run tests:
+2. Run checks:
 
    ```powershell
-   & "C:\Users\Ancie\AppData\Local\Programs\Python\Python313\python.exe" -m unittest discover -s tests
+   .\scripts\check.ps1
    ```
 
 3. Bump the version in `ancient_all_in_one/__init__.py`.
@@ -36,14 +36,26 @@ goals, notes, or custom sidebar items.
 
 6. Create a GitHub release with a matching tag, such as `v0.1.1`.
 
+## Release Helper
+
+Use this helper when preparing a version bump:
+
+```powershell
+.\scripts\release.ps1 -Version 0.2.0
+```
+
+It updates version files and runs the local check suite. It does not commit or
+tag automatically, so you still review the diff before publishing.
+
 ## Release Checklist
 
 - `ancient_all_in_one/__init__.py` has the new version.
-- Tests pass locally.
+- `pyproject.toml` has the same new version.
+- Tests, compile checks, and Ruff pass locally.
 - GitHub Actions passes on `main`.
 - Release tag starts with `v`, for example `v0.2.0`.
 - Release notes describe what changed.
-- No user-specific files from `user_data/` are committed.
+- No user-specific files from app data or `user_data/` are committed.
 
 ## Version Rules
 
@@ -57,4 +69,4 @@ Use semantic versions:
 
 For now, updates open the GitHub release page. Later, the release can include a
 packaged `.exe` built with PyInstaller. The same update checker can point users
-to that release asset while preserving `user_data/`.
+to that release asset while preserving user data.

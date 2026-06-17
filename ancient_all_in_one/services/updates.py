@@ -54,10 +54,7 @@ class UpdateChecker:
                 message="Update checker is ready. Add your GitHub owner/repo.",
             )
 
-        url = (
-            "https://api.github.com/repos/"
-            f"{self.owner}/{self.repo}/releases/latest"
-        )
+        url = f"https://api.github.com/repos/{self.owner}/{self.repo}/releases/latest"
 
         try:
             with urllib.request.urlopen(url, timeout=5) as response:

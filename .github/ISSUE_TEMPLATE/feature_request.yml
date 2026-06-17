@@ -1,0 +1,30 @@
+﻿name: Feature request
+description: Suggest a new tracker feature or game module.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What should this help with?
+      description: Describe the workflow, game, or tracking problem.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the feature you want.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Shared app foundation
+        - New game module
+        - Existing tracker page
+        - UI polish
+    validations:
+      required: true

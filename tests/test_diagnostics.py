@@ -9,7 +9,7 @@ from ancient_all_in_one.services.diagnostics import build_diagnostics
 class DiagnosticsTest(unittest.TestCase):
     """Verify diagnostic details are accurate enough for support."""
 
-    def test_diagnostics_include_app_and_repository(self):
+    def test_diagnostics_include_app_repository_and_paths(self):
         diagnostics = build_diagnostics()
         message = diagnostics.to_message()
 
@@ -17,6 +17,9 @@ class DiagnosticsTest(unittest.TestCase):
         self.assertEqual(diagnostics.github_repo, GITHUB_REPO)
         self.assertIn("Ancient All-in-One", message)
         self.assertIn("ancient-all-in-one", message)
+        self.assertIn("Settings file:", message)
+        self.assertIn("Backup folder:", message)
+        self.assertIn("Modules: general", message)
 
 
 if __name__ == "__main__":

@@ -21,6 +21,9 @@ else:
     USER_DATA_DIR = LEGACY_USER_DATA_DIR
 
 DATA_FILE = USER_DATA_DIR / "tracker_data.json"
+SETTINGS_FILE = USER_DATA_DIR / "settings.json"
+BACKUP_DIR = USER_DATA_DIR / "backups"
+EXPORTS_DIR = USER_DATA_DIR / "exports"
 LOG_DIR = USER_DATA_DIR / "logs"
 LOG_FILE = LOG_DIR / "app.log"
 

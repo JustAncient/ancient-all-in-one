@@ -81,6 +81,55 @@ class StateStoreTest(unittest.TestCase):
             self.assertEqual(len(backups), 1)
             self.assertEqual(state.navigation[0].title, "Daily/Weekly")
 
+    def test_store_exports_and_imports_with_backup(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            data_file = temp_path / "tracker_data.json"
+            export_file = temp_path / "exports" / "data.json"
+            import_file = temp_path / "import.json"
+            store = StateStore(data_file)
+            state = store.load()
+            state.daily_weekly["dailies"] = ["Daily A"]
+            store.save(state)
+
+            store.export_to(export_file)
+            import_file.write_text(
+                export_file.read_text(encoding="utf-8"), encoding="utf-8"
+            )
+            imported = store.import_from(import_file)
+
+            self.assertTrue(export_file.exists())
+            self.assertEqual(imported.daily_weekly["dailies"], ["Daily A"])
+            self.assertTrue(
+                list((temp_path / "backups").glob("tracker_data-*pre-import*"))
+            )
+
+    def test_import_rejects_invalid_root_without_replacing_current_data(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            data_file = temp_path / "tracker_data.json"
+            import_file = temp_path / "bad_import.json"
+            store = StateStore(data_file)
+            state = store.load()
+            state.daily_weekly["dailies"] = ["Keep Me"]
+            store.save(state)
+            import_file.write_text("[]", encoding="utf-8")
+
+            with self.assertRaises(ValueError):
+                store.import_from(import_file)
+
+            reloaded = store.load()
+            self.assertEqual(reloaded.daily_weekly["dailies"], ["Keep Me"])
+
+    def test_validation_repairs_malformed_saved_data(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            data_file = Path(temp_dir) / "tracker_data.json"
+            data_file.write_text('{"navigation": "bad"}', encoding="utf-8")
+
+            state = StateStore(data_file).load()
+
+            self.assertEqual(state.navigation[0].title, "Daily/Weekly")
+
 
 if __name__ == "__main__":
     unittest.main()

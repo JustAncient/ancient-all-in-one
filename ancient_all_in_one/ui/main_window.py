@@ -5,12 +5,14 @@ from __future__ import annotations
 import logging
 import tkinter as tk
 import webbrowser
-from tkinter import messagebox, simpledialog, ttk
+from pathlib import Path
+from tkinter import filedialog, messagebox, simpledialog, ttk
 from types import TracebackType
 
 from ancient_all_in_one.config import APP_NAME
 from ancient_all_in_one.models import AppState, NavItem
 from ancient_all_in_one.services.diagnostics import build_diagnostics
+from ancient_all_in_one.services.settings import AppSettings, SettingsStore
 from ancient_all_in_one.services.storage import StateStore
 from ancient_all_in_one.services.updates import UpdateChecker, UpdateResult
 from ancient_all_in_one.ui.navigation import NavigationSidebar
@@ -22,16 +24,25 @@ LOGGER = logging.getLogger(__name__)
 class MainWindow(tk.Tk):
     """Desktop shell for the progression tracker."""
 
-    def __init__(self, state: AppState, store: StateStore) -> None:
+    def __init__(
+        self,
+        state: AppState,
+        store: StateStore,
+        settings: AppSettings | None = None,
+        settings_store: SettingsStore | None = None,
+    ) -> None:
         super().__init__()
         self.state = state
         self.store = store
+        self.settings = settings or AppSettings()
+        self.settings_store = settings_store
         self.selected_item: NavItem | None = None
         self.content_frame: ttk.Frame | None = None
 
         self.title(APP_NAME)
-        self.geometry("1120x720")
+        self.geometry(self.settings.window_geometry)
         self.minsize(880, 560)
+        self.protocol("WM_DELETE_WINDOW", self._close)
 
         self._configure_styles()
         self._build_menu_bar()
@@ -39,7 +50,8 @@ class MainWindow(tk.Tk):
 
         first_item = self.state.navigation[0]
         self.select_item(first_item)
-        self.after(600, self._check_for_updates_on_open)
+        if self.settings.check_for_updates_on_startup:
+            self.after(600, self._check_for_updates_on_open)
 
     def select_item(self, item: NavItem) -> None:
         """Show a navigation item in the main content area."""
@@ -96,7 +108,10 @@ class MainWindow(tk.Tk):
         file_menu = tk.Menu(menu_bar, tearoff=False)
         file_menu.add_command(label="Save", command=self.save_state)
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.destroy)
+        file_menu.add_command(label="Export Data...", command=self._export_data)
+        file_menu.add_command(label="Import Data...", command=self._import_data)
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit", command=self._close)
         menu_bar.add_cascade(label="File", menu=file_menu)
 
         edit_menu = tk.Menu(menu_bar, tearoff=False)
@@ -189,6 +204,49 @@ class MainWindow(tk.Tk):
         style.configure("TLabelframe", background="#f6f7f9")
         style.configure("TLabelframe.Label", background="#f6f7f9")
 
+    def _export_data(self) -> None:
+        export_path = filedialog.asksaveasfilename(
+            parent=self,
+            title="Export Data",
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            initialfile="ancient-all-in-one-data.json",
+        )
+        if not export_path:
+            return
+
+        saved_path = self.store.export_to(Path(export_path))
+        messagebox.showinfo(
+            "Export Complete",
+            f"Data exported to:\n{saved_path}",
+            parent=self,
+        )
+
+    def _import_data(self) -> None:
+        import_path = filedialog.askopenfilename(
+            parent=self,
+            title="Import Data",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+        )
+        if not import_path:
+            return
+
+        confirmed = messagebox.askyesno(
+            "Import Data",
+            "Importing replaces current tracker data after creating a backup. "
+            "Continue?",
+            parent=self,
+        )
+        if not confirmed:
+            return
+
+        self.state = self.store.import_from(Path(import_path))
+        self.sidebar.set_items(self.state.navigation)
+        self.select_item(self.state.navigation[0])
+        messagebox.showinfo(
+            "Import Complete", "Data imported successfully.", parent=self
+        )
+
     def _add_goal_from_menu(self) -> None:
         goals = self._find_first_item("goal_group")
         if goals is not None:
@@ -265,6 +323,12 @@ class MainWindow(tk.Tk):
             return
 
         messagebox.showinfo("Updates", "\n".join(detail), parent=self)
+
+    def _close(self) -> None:
+        self.settings.window_geometry = self.geometry()
+        if self.settings_store is not None:
+            self.settings_store.save(self.settings)
+        self.destroy()
 
     def _find_first_item(self, item_type: str) -> NavItem | None:
         for item in self.state.navigation:
