@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import tkinter as tk
+import webbrowser
 from tkinter import messagebox, simpledialog, ttk
 
 from maplestory_tracker.config import APP_NAME
 from maplestory_tracker.models import AppState, NavItem
 from maplestory_tracker.services.storage import StateStore
-from maplestory_tracker.services.updates import UpdateChecker
+from maplestory_tracker.services.updates import UpdateChecker, UpdateResult
 from maplestory_tracker.ui.navigation import NavigationSidebar
 from maplestory_tracker.ui.pages import PageFactory
 
@@ -201,12 +202,39 @@ class MainWindow(tk.Tk):
 
     def _show_update_result(self) -> None:
         result = UpdateChecker().check()
-        messagebox.showinfo("Updates", result.message, parent=self)
+        self._show_update_dialog(result)
 
     def _check_for_updates_on_open(self) -> None:
         result = UpdateChecker().check()
         if result.update_available:
-            messagebox.showinfo("Update Available", result.message, parent=self)
+            self._show_update_dialog(result)
+
+    def _show_update_dialog(self, result: UpdateResult) -> None:
+        detail = [
+            result.message,
+            f"Current version: {result.current_version}",
+        ]
+        if result.latest_version:
+            detail.append(f"Latest version: {result.latest_version}")
+        if result.release_name:
+            detail.append(f"Release: {result.release_name}")
+        if result.release_notes:
+            detail.append("")
+            detail.append(result.release_notes)
+
+        if result.update_available and result.has_release_url:
+            detail.append("")
+            detail.append("Open the release page to download the update?")
+            should_open = messagebox.askyesno(
+                "Update Available",
+                "\n".join(detail),
+                parent=self,
+            )
+            if should_open and result.release_url is not None:
+                webbrowser.open(result.release_url)
+            return
+
+        messagebox.showinfo("Updates", "\n".join(detail), parent=self)
 
     def _find_first_item(self, item_type: str) -> NavItem | None:
         for item in self.state.navigation:

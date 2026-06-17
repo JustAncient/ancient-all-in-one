@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -19,6 +20,14 @@ class UpdateResult:
     update_available: bool
     message: str
     release_url: str | None = None
+    release_name: str | None = None
+    release_notes: str | None = None
+
+    @property
+    def has_release_url(self) -> bool:
+        """Return whether the result can send users to a release page."""
+
+        return bool(self.release_url)
 
 
 class UpdateChecker:
@@ -63,6 +72,9 @@ class UpdateChecker:
 
         latest = str(payload.get("tag_name", "")).lstrip("v")
         is_newer = self._is_newer_version(latest, self.current_version)
+        release_url = payload.get("html_url")
+        release_name = payload.get("name") or payload.get("tag_name")
+        release_notes = self._clean_release_notes(payload.get("body", ""))
 
         return UpdateResult(
             current_version=self.current_version,
@@ -73,7 +85,9 @@ class UpdateChecker:
                 if is_newer
                 else "You are running the latest version."
             ),
-            release_url=payload.get("html_url"),
+            release_url=release_url,
+            release_name=release_name,
+            release_notes=release_notes,
         )
 
     @staticmethod
@@ -81,11 +95,16 @@ class UpdateChecker:
         """Compare simple dotted numeric versions."""
 
         def parts(version: str) -> tuple[int, ...]:
-            values = []
-            for piece in version.split("."):
-                if not piece.isdigit():
-                    break
-                values.append(int(piece))
-            return tuple(values)
+            numeric_parts = re.findall(r"\d+", version)
+            return tuple(int(part) for part in numeric_parts[:3])
 
         return parts(latest) > parts(current)
+
+    @staticmethod
+    def _clean_release_notes(notes: str, max_length: int = 700) -> str:
+        """Normalize release notes for compact in-app display."""
+
+        cleaned = notes.strip()
+        if len(cleaned) <= max_length:
+            return cleaned
+        return f"{cleaned[:max_length].rstrip()}..."

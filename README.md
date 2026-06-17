@@ -9,8 +9,7 @@ The first version focuses on a scalable foundation:
 - Persistent user data in `user_data/tracker_data.json`.
 - Goal submenus that can be created from the `+` button beside Goals.
 - Separate services for storage, navigation, and update checks.
-- Update-check framework that can later point at your GitHub releases feed
-  while preserving user data.
+- GitHub Releases update checker that preserves user data.
 
 ## Run
 
@@ -43,3 +42,5 @@ Keep user data outside the application package in `user_data/`. Ship code
 updates through GitHub releases or a packaged installer, then run lightweight
 data migrations on launch if the saved schema version is older than the app's
 current schema.
+
+See [docs/update_flow.md](docs/update_flow.md) for the full release checklist.

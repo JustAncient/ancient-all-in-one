@@ -13,5 +13,5 @@ USER_DATA_DIR = PROJECT_ROOT / "user_data"
 DATA_FILE = USER_DATA_DIR / "tracker_data.json"
 
 # Replace these when your GitHub repository is ready.
-GITHUB_OWNER = "your-github-user"
+GITHUB_OWNER = "justancient"
 GITHUB_REPO = "maplestory-tracker"
