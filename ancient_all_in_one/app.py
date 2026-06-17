@@ -1,7 +1,7 @@
 """Application bootstrap."""
 
-from maplestory_tracker.services.storage import StateStore
-from maplestory_tracker.ui.main_window import MainWindow
+from ancient_all_in_one.services.storage import StateStore
+from ancient_all_in_one.ui.main_window import MainWindow
 
 
 def main() -> None:

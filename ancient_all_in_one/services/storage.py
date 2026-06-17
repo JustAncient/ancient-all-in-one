@@ -5,9 +5,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from maplestory_tracker.config import DATA_FILE, SCHEMA_VERSION
-from maplestory_tracker.data.default_state import build_default_state
-from maplestory_tracker.models import AppState
+from ancient_all_in_one.config import DATA_FILE, SCHEMA_VERSION
+from ancient_all_in_one.data.default_state import build_default_state
+from ancient_all_in_one.models import AppState
 
 
 class StateStore:

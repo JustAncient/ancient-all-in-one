@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 
-from maplestory_tracker.config import APP_VERSION, GITHUB_OWNER, GITHUB_REPO
+from ancient_all_in_one.config import APP_VERSION, GITHUB_OWNER, GITHUB_REPO
 
 
 @dataclass(frozen=True, slots=True)

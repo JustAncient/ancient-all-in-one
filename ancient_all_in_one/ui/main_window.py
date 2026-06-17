@@ -6,12 +6,12 @@ import tkinter as tk
 import webbrowser
 from tkinter import messagebox, simpledialog, ttk
 
-from maplestory_tracker.config import APP_NAME
-from maplestory_tracker.models import AppState, NavItem
-from maplestory_tracker.services.storage import StateStore
-from maplestory_tracker.services.updates import UpdateChecker, UpdateResult
-from maplestory_tracker.ui.navigation import NavigationSidebar
-from maplestory_tracker.ui.pages import PageFactory
+from ancient_all_in_one.config import APP_NAME
+from ancient_all_in_one.models import AppState, NavItem
+from ancient_all_in_one.services.storage import StateStore
+from ancient_all_in_one.services.updates import UpdateChecker, UpdateResult
+from ancient_all_in_one.ui.navigation import NavigationSidebar
+from ancient_all_in_one.ui.pages import PageFactory
 
 
 class MainWindow(tk.Tk):

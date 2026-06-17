@@ -26,7 +26,7 @@ goals, notes, or custom sidebar items.
    & "C:\Users\Ancie\AppData\Local\Programs\Python\Python313\python.exe" -m unittest discover -s tests
    ```
 
-3. Bump the version in `maplestory_tracker/__init__.py`.
+3. Bump the version in `ancient_all_in_one/__init__.py`.
 4. Commit the changes.
 5. Push to GitHub:
 
@@ -38,7 +38,7 @@ goals, notes, or custom sidebar items.
 
 ## Release Checklist
 
-- `maplestory_tracker/__init__.py` has the new version.
+- `ancient_all_in_one/__init__.py` has the new version.
 - Tests pass locally.
 - GitHub Actions passes on `main`.
 - Release tag starts with `v`, for example `v0.2.0`.

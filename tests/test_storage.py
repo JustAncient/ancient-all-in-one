@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from maplestory_tracker.models import NavItem
-from maplestory_tracker.services.storage import StateStore
+from ancient_all_in_one.models import NavItem
+from ancient_all_in_one.services.storage import StateStore
 
 
 class StateStoreTest(unittest.TestCase):

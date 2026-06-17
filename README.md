@@ -14,13 +14,13 @@ The first version focuses on a scalable foundation:
 ## Run
 
 ```powershell
-& "C:\Users\Ancie\AppData\Local\Programs\Python\Python313\python.exe" -m maplestory_tracker
+& "C:\Users\Ancie\AppData\Local\Programs\Python\Python313\python.exe" -m ancient_all_in_one
 ```
 
 ## Project Layout
 
 ```text
-maplestory_tracker/
+ancient_all_in_one/
   __main__.py
   app.py
   config.py

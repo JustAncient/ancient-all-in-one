@@ -6,7 +6,7 @@ import tkinter as tk
 from collections.abc import Callable
 from tkinter import ttk
 
-from maplestory_tracker.models import NavItem
+from ancient_all_in_one.models import NavItem
 
 SelectCallback = Callable[[NavItem], None]
 AddCallback = Callable[[NavItem], None]

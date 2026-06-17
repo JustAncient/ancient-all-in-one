@@ -2,8 +2,8 @@
 
 import unittest
 
-from maplestory_tracker import __version__
-from maplestory_tracker.config import APP_BASE_NAME, APP_NAME, APP_VERSION
+from ancient_all_in_one import __version__
+from ancient_all_in_one.config import APP_BASE_NAME, APP_NAME, APP_VERSION
 
 
 class ConfigTest(unittest.TestCase):

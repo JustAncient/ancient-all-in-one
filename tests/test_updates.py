@@ -2,7 +2,7 @@
 
 import unittest
 
-from maplestory_tracker.services.updates import UpdateChecker
+from ancient_all_in_one.services.updates import UpdateChecker
 
 
 class UpdateCheckerTest(unittest.TestCase):

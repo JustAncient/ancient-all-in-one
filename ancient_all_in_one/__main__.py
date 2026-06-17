@@ -1,6 +1,6 @@
 """Command-line entry point for the MapleStory tracker."""
 
-from maplestory_tracker.app import main
+from ancient_all_in_one.app import main
 
 
 if __name__ == "__main__":

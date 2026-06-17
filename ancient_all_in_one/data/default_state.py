@@ -1,7 +1,7 @@
 """Default state for first-time users."""
 
-from maplestory_tracker.config import SCHEMA_VERSION
-from maplestory_tracker.models import AppState, NavItem
+from ancient_all_in_one.config import SCHEMA_VERSION
+from ancient_all_in_one.models import AppState, NavItem
 
 
 def build_default_state() -> AppState:

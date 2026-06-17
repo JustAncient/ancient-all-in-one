@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from maplestory_tracker import __version__
+from ancient_all_in_one import __version__
 
 APP_VERSION = __version__
 APP_BASE_NAME = "Ancient All-in-One"
