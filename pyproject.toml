@@ -5,6 +5,9 @@ description = "A modular all-in-one MapleStory GMS progression tracker."
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+dev = ["ruff>=0.8.0"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
@@ -12,6 +15,3 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
-[tool.pytest.ini_options]
-pythonpath = ["."]
-testpaths = ["tests"]

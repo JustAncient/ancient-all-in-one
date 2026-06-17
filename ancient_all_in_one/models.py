@@ -14,11 +14,11 @@ class NavItem:
     title: str
     item_type: str
     item_id: str = field(default_factory=lambda: uuid4().hex)
-    children: list["NavItem"] = field(default_factory=list)
+    children: list[NavItem] = field(default_factory=list)
     can_add_child: bool = False
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "NavItem":
+    def from_dict(cls, payload: dict[str, Any]) -> NavItem:
         """Build a navigation item from saved JSON data."""
 
         children = [
@@ -54,7 +54,7 @@ class AppState:
     daily_weekly: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "AppState":
+    def from_dict(cls, payload: dict[str, Any]) -> AppState:
         """Build application state from saved JSON data."""
 
         return cls(

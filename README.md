@@ -44,3 +44,5 @@ data migrations on launch if the saved schema version is older than the app's
 current schema.
 
 See [docs/update_flow.md](docs/update_flow.md) for the full release checklist.
+See [docs/development.md](docs/development.md) for testing, logging, and user
+data safety notes.
